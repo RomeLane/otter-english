@@ -31,7 +31,7 @@
 }
     #myDIV {
   
-  text-align: right;}
+  text-align: center;}
     h1 {
       color: #edeff0;
     }
@@ -39,7 +39,7 @@
       font-size: 22px;
     }
     .btn {
-      display: inline-block;
+      display: center;
       padding: 10px 20px;
       background-color: #f6f8f3;
       color: rgba(7, 8, 7, 0.822);
@@ -72,55 +72,57 @@ label {
                  1px  1px 0 black;
   }
   .navbar {
-  position: absolute;
-  top: 140px; /* ⬅️ Adjusted to push it lower */
-  left: 20px;
-}
-
-.navbar ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.navbar li {
-  margin-bottom: 40px; /* stacks items vertically */
-}
-
-.navbar a {
-  display: inline-block;
-  padding: 10px 18px;
   background-color: white;
-  color: #2c3e50;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 16px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.navbar a:hover {
-  background-color: #1dd8f4b9;
-  color: white;
-  transform: scale(1.05);
+/* Nav list - horizontal layout */
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
+
+/* Nav links - styled buttons */
+.nav-links li a {
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: #1a1a1a;
+  padding: 10px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-links li a:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+
+
   </style>
 </head>
 <body>
 
   <nav class="navbar">
-    <ul>
+    <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="lessons.html">Lessons</a></li>
-<li><a href="faq.html">FAQ / Articles</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="lessons.html">Lessons</a></li>
+      <li><a href="faq.html">FAQ / Articles</a></li>
     </ul>
-
-    
   </nav>
 
 
+  
   <div id="myDIV">
   <h1 class="center-text">Utter the Otter Way!</h1>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -148,6 +150,5 @@ label {
     });
   </script> </body>
   
-  <h2><a href="https://calendly.com/rmlnduenas" target="_blank" class="booking-btn">Book a Lesson via Calendar</a></h2></div>
-  <p>Already booked? <a href="payment.html" class="btn" style="background-color: #27ae60;">Complete Payment</a></p>
-  
+  <h2><a href="https://calendly.com/rmlnduenas" target="_blank" class="booking-btn">Book a Lesson Now</a></h2></div>
+ 
