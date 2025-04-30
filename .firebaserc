@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "otter-english-d1b7d",
+    "staging": "otter-english-d1b7d"
+  },
+  "targets": {},
+  "etags": {}
+}
