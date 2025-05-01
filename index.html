@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <style>
+    .booking-btn {
+  display: inline-block;
+  padding: 10px 14px;
+  background-color: #206da4;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(43, 104, 105, 0.1);
+}
+
+.booking-btn:hover {
+  background-color: #1dd8f4b9;
+  transform: scale(1.05);
+}
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      padding: 18px;
+      background-image: url('https://github.com/RomeLane/otter-english/blob/main/Your%20paragraph%20text_20250424_151145_0000.png?raw=true');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+    #myDIV {
+  
+  text-align: center;}
+    h1 {
+      color: #edeff0;
+    }
+    p {
+      font-size: 22px;
+    }
+    .btn {
+      display: center;
+      padding: 10px 20px;
+      background-color: #f6f8f3;
+      color: rgba(7, 8, 7, 0.822);
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    @keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.booking-btn {
+  animation: fadeInUp 1s ease-in-out;
+}
+
+label {
+    color: white;
+    font-weight: bold;
+    text-shadow: -1px -1px 0 black,  
+                 1px -1px 0 black,
+                -1px  1px 0 black,
+                 1px  1px 0 black;
+  }
+  .navbar {
+  background-color: #206da4;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Nav list - horizontal layout */
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Nav links - styled buttons */
+.nav-links li a {
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: #1a1a1a;
+  padding: 10px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-links li a:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="lessons.html">Lessons</a></li>
+      <li><a href="faq.html">FAQ / Articles</a></li>
+    </ul>
+  </nav>
+
+
+  
+  <div id="myDIV">
+  <h1 class="center-text">Utter the Otter Way, Wee!</h1>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <p> Start here ↓ </p>
+  
+  <form action=https://formspree.io/f/xgvadyon method="POST">
+    <label>
+      Your Name:
+      <input type="text" name="name" required>
+    </label><br><br>
+    <label>
+      Your Email:
+      <input type="email" name="_replyto" required>
+    </label><br><br>
+    <label>
+      Message:
+      <textarea name="message" required></textarea>
+    </label><br><br>
+    <button type="submit" class="btn">Send ➤</button>
+
+  </form>
+  <script>
+    window.addEventListener('load', function () {
+      document.body.classList.add('loaded');
+    });
+  </script> </body>
+  
+  <h2><a href="https://calendly.com/rmlnduenas" target="_blank" class="booking-btn">Book a Lesson Now</a></h2></div>
+ 
