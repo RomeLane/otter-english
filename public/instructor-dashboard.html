@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Instructor Dashboard - Otter English</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      padding: 18px;
+      background-image: url('https://github.com/RomeLane/otter-english/blob/main/Your%20paragraph%20text_20250424_151145_0000.png?raw=true');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar {
+      background-color: #206da4;
+      padding: 20px 0;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      color: #1a1a1a;
+      padding: 10px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .nav-links li a:hover {
+      background-color: #007bff;
+      color: white;
+    }
+
+    h1 {
+      text-align: center;
+      color: #206da4;
+      margin-bottom: 30px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background-color: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+      color: #206da4;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #206da4;
+      padding-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    .btn {
+      background-color: #206da4;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #1a5a8a;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    .availability-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .availability-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      background-color: #f8f9fa;
+    }
+
+    .availability-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .availability-info {
+      flex: 1;
+    }
+
+    .availability-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .bookings-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .booking-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      background-color: #f8f9fa;
+    }
+
+    .booking-item.pending {
+      border-left: 4px solid #ffc107;
+    }
+
+    .booking-item.confirmed {
+      border-left: 4px solid #28a745;
+    }
+
+    .booking-item.cancelled {
+      border-left: 4px solid #dc3545;
+    }
+
+    .booking-item.completed {
+      border-left: 4px solid #6c757d;
+    }
+
+    .booking-info {
+      flex: 1;
+    }
+
+    .booking-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .status-confirmed {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .status-cancelled {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .status-completed {
+      background-color: #e2e3e5;
+      color: #495057;
+    }
+
+    .day-names {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .day-name {
+      padding: 8px 12px;
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .auth-required {
+      display: none;
+    }
+
+    .instructor-only {
+      display: none;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+      background-color: #f8d7da;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="lessons.html">Lessons</a></li>
+      <li><a href="booking.html">Book a Lesson</a></li>
+      <li><a href="instructor-dashboard.html">Instructor Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1>Instructor Dashboard</h1>
+
+    <div class="auth-required instructor-only">
+      <div class="dashboard-grid">
+        <!-- Availability Management -->
+        <div class="card">
+          <h2>Manage Availability</h2>
+          <form id="availability-form">
+            <div class="form-group">
+              <label for="day-of-week">Day of Week:</label>
+              <select id="day-of-week" name="dayOfWeek" required>
+                <option value="">Select a day</option>
+                <option value="0">Sunday</option>
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>
+              </select>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="start-time">Start Time:</label>
+                <input type="time" id="start-time" name="startTime" required>
+              </div>
+              <div class="form-group">
+                <label for="end-time">End Time:</label>
+                <input type="time" id="end-time" name="endTime" required>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn">Add Availability</button>
+          </form>
+        </div>
+
+        <!-- Current Availability -->
+        <div class="card">
+          <h2>Current Availability</h2>
+          <div id="availability-list" class="availability-list">
+            <p>Loading availability...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bookings Management -->
+      <div class="card">
+        <h2>Manage Bookings</h2>
+        <div id="bookings-list" class="bookings-list">
+          <p>Loading bookings...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Not authorized message -->
+    <div class="error-message" id="not-authorized" style="display: none;">
+      <p>Access Denied: This page is only accessible to instructors.</p>
+      <p>Please <a href="booking.html">sign in</a> with an instructor account.</p>
+    </div>
+  </div>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/instructor-dashboard.js"></script>
+</body>
+</html>
