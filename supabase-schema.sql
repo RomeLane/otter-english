@@ -1,7 +1,7 @@
 -- Supabase Database Schema for Otter English
 
 -- Enable RLS (Row Level Security)
-ALTER DATABASE postgres SET "app.jwt_secret" TO 'your-jwt-secret-here';
+--ALTER DATABASE postgres SET "app.jwt_secret" TO 'your-jwt-secret-here';
 
 -- Create profiles table (extends auth.users)
 CREATE TABLE IF NOT EXISTS profiles (
@@ -72,7 +72,7 @@ CREATE INDEX IF NOT EXISTS idx_bookings_student_id ON bookings(student_id);
 CREATE INDEX IF NOT EXISTS idx_bookings_instructor_id ON bookings(instructor_id);
 CREATE INDEX IF NOT EXISTS idx_bookings_scheduled_date ON bookings(scheduled_date);
 CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings(status);
-
+CREATE INDEX IF NOT EXISTS idx_bookings_lesson_type_id ON bookings(lesson_type_id);
 -- Enable Row Level Security
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contact_submissions ENABLE ROW LEVEL SECURITY;
@@ -84,16 +84,16 @@ ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
 
 -- Profiles: Users can read their own profile, instructors/admins can read all
 CREATE POLICY "Users can read own profile" ON profiles
-    FOR SELECT USING (auth.uid() = id);
+    FOR SELECT USING ((auth.uid()) = id);
 
 CREATE POLICY "Users can update own profile" ON profiles
-    FOR UPDATE USING (auth.uid() = id);
+    FOR UPDATE USING ((auth.uid()) = id);
 
 CREATE POLICY "Instructors can read all profiles" ON profiles
     FOR SELECT USING (
         EXISTS (
             SELECT 1 FROM profiles 
-            WHERE id = auth.uid() 
+            WHERE id = (auth.uid()) 
             AND role IN ('instructor', 'admin')
         )
     );
@@ -106,7 +106,7 @@ CREATE POLICY "Instructors can read contact submissions" ON contact_submissions
     FOR SELECT USING (
         EXISTS (
             SELECT 1 FROM profiles 
-            WHERE id = auth.uid() 
+            WHERE id = (auth.uid()) 
             AND role IN ('instructor', 'admin')
         )
     );
@@ -115,7 +115,7 @@ CREATE POLICY "Instructors can update contact submissions" ON contact_submission
     FOR UPDATE USING (
         EXISTS (
             SELECT 1 FROM profiles 
-            WHERE id = auth.uid() 
+            WHERE id = (auth.uid()) 
             AND role IN ('instructor', 'admin')
         )
     );
@@ -124,11 +124,29 @@ CREATE POLICY "Instructors can update contact submissions" ON contact_submission
 CREATE POLICY "Anyone can read lesson types" ON lesson_types
     FOR SELECT USING (active = true);
 
-CREATE POLICY "Admins can manage lesson types" ON lesson_types
-    FOR ALL USING (
+CREATE POLICY "Admins can insert lesson types" ON lesson_types
+    FOR INSERT WITH CHECK (
         EXISTS (
             SELECT 1 FROM profiles 
-            WHERE id = auth.uid() 
+            WHERE id = (auth.uid()) 
+            AND role = 'admin'
+        )
+    );
+
+CREATE POLICY "Admins can update lesson types" ON lesson_types
+    FOR UPDATE USING (
+        EXISTS (
+            SELECT 1 FROM profiles 
+            WHERE id = (auth.uid()) 
+            AND role = 'admin'
+        )
+    );
+
+CREATE POLICY "Admins can delete lesson types" ON lesson_types
+    FOR DELETE USING (
+        EXISTS (
+            SELECT 1 FROM profiles 
+            WHERE id = (auth.uid()) 
             AND role = 'admin'
         )
     );
@@ -136,13 +154,33 @@ CREATE POLICY "Admins can manage lesson types" ON lesson_types
 -- Availability slots: Everyone can read, only instructors can manage their own
 CREATE POLICY "Anyone can read availability slots" ON availability_slots
     FOR SELECT USING (active = true);
-
-CREATE POLICY "Instructors can manage own availability" ON availability_slots
-    FOR ALL USING (
-        auth.uid() = instructor_id OR 
+  
+CREATE POLICY "Instructors can insert availability" ON availability_slots
+    FOR INSERT WITH CHECK (
+        (auth.uid()) = instructor_id OR 
         EXISTS (
             SELECT 1 FROM profiles 
-            WHERE id = auth.uid() 
+            WHERE id = (auth.uid()) 
+            AND role = 'admin'
+        )
+    );
+
+CREATE POLICY "Instructors can update availability" ON availability_slots
+    FOR UPDATE USING (
+        (auth.uid()) = instructor_id OR 
+        EXISTS (
+            SELECT 1 FROM profiles 
+            WHERE id = (auth.uid()) 
+            AND role = 'admin'
+        )
+    );
+
+CREATE POLICY "Instructors can delete availability" ON availability_slots
+    FOR DELETE USING (
+        (auth.uid()) = instructor_id OR 
+        EXISTS (
+            SELECT 1 FROM profiles 
+            WHERE id = (auth.uid()) 
             AND role = 'admin'
         )
     );
@@ -177,6 +215,9 @@ ON CONFLICT DO NOTHING;
 CREATE OR REPLACE FUNCTION handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
+    -- Set search_path to empty for security
+    SET search_path = '';
+    
     INSERT INTO profiles (id, email, full_name)
     VALUES (NEW.id, NEW.email, NEW.raw_user_meta_data->>'full_name');
     RETURN NEW;
@@ -192,6 +233,9 @@ CREATE OR REPLACE TRIGGER on_auth_user_created
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
+    -- Set search_path to empty for security
+    SET search_path = '';
+    
     NEW.updated_at = NOW();
     RETURN NEW;
 END;
